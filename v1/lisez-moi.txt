@@ -1,0 +1,8 @@
+Comment créer son livre d'or ?
+**************************
+Editez le fichier livre.php pour suivre le tutorial
+Editez le fichier connexion.php pour changer les paramètres de connexion
+**************************
+Enjoy !
+Ludovic Giambiasi,
+ludo@cinegap.com
