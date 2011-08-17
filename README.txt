@@ -66,6 +66,33 @@ ITTERATION 2, aka V3
 - correction du point #7, #8, #9
 - suite de correction du point #10, #11
 
+Mélanger du code HTML et du code d'accès aux données écris PHP/SQL, pourquoi est ce mal ?
+    C'est mal car cela pousse à dupliquer du code et à l'éparpiller tout au long
+    de vos pages HTML.
+    En soit  c'est fonctionnel, mais si vous avez 5 pages avec la même requête copier / coller,
+    le jour ou vous devrait ajouter une colonne, vous aurez 5 mises à jours à réaliser.
+    En utilisant une séparation de ces deux rôles nous allons pouvoir réduire
+    le nombre de mises à jours à 1.
+    A cette fin nous allons déporter une partie du code dans un fichier model.php.
+    Nous lierons ensuite nos vues et notre model par quelques appels de fonctions.
+
+Ne pas filtrer correctement les requêtes SQL, un facteur de risque.
+    Il n'est point de question ici. Lorsque les requêtes SQL ne sont
+    filtrées par les outils adéquats, vous vous mettez délibérement
+    en situation périlleuse.
+    C'est un choix, que nous ne pouvons cautionner.
+
+Valider les forumalaires en javascript, pourquoi est ce mal ?
+    La validation de formulaire par le seul biais du langage javascript,
+    est non sens.
+    D'une manière simple, rien n'empêche l'internaute de désactiver le javascript
+    et d'insérer tout et n'impote quoi dans votre bases de données.
+    Rien n'empêche une personne mal intentionnée de générer des requêtes HTML POST
+    sur votre application et d'outre passer vos script de validation JS.
+    Ils n'ont donc qu'une portée sécuritaire, entièrement relative à la bienveillance de l'utilisateur.
+    En d'autres termes vous supposez que vos utilisateurs sont de gentils garçons, c'est faire fi de la réalité.
+    C'est faire fi du premier principe de la sécurité, tout ce qui est extérieur est dangereux et doit être
+    étudié au peigne fin avant d'être accepté.
 
 
 ITTERATION 3, aka V4
