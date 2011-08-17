@@ -21,6 +21,8 @@ Quelques constats de la version 1 proposé par DVP :
 11# l'application ne présente aucune pratique de séparation des roles (Sans arriver à un modèle pur mvc,
     il est possible de faire mieux, tout en restant simple et concret)
     http://julien-pauli.developpez.com/tutoriels/php/mvc-controleur/
+12# L'application n'utilise pas les variables prédéfinies par PHP et fais reposer
+    leurs lectures sur la configuration de la directive register_globals
 
 Partant de ces constats, je me tentes à corriger tout ou partie de ces défauts.
 J'essaierais par la même occasion de rester aussi didactique que l'auteur original, en apportant
@@ -63,7 +65,7 @@ A quoi ça sert DRY ?
 
 
 ITTERATION 2, aka V3
-- correction du point #7, #8, #9
+- correction du point #7, #8, #9, #13
 - suite de correction du point #10, #11
 
 Mélanger du code HTML et du code d'accès aux données écris PHP/SQL, pourquoi est ce mal ?
@@ -82,9 +84,9 @@ Ne pas filtrer correctement les requêtes SQL, un facteur de risque.
     en situation périlleuse.
     C'est un choix, que nous ne pouvons cautionner.
 
-Valider les forumalaires en javascript, pourquoi est ce mal ?
+Valider les formulaires en javascript, pourquoi est ce mal ?
     La validation de formulaire par le seul biais du langage javascript,
-    est non sens.
+    est un non sens.
     D'une manière simple, rien n'empêche l'internaute de désactiver le javascript
     et d'insérer tout et n'impote quoi dans votre bases de données.
     Rien n'empêche une personne mal intentionnée de générer des requêtes HTML POST
@@ -93,6 +95,7 @@ Valider les forumalaires en javascript, pourquoi est ce mal ?
     En d'autres termes vous supposez que vos utilisateurs sont de gentils garçons, c'est faire fi de la réalité.
     C'est faire fi du premier principe de la sécurité, tout ce qui est extérieur est dangereux et doit être
     étudié au peigne fin avant d'être accepté.
+    A cette fin nous filtrerons les variables et les corrigerons avant l'insertion.
 
 
 ITTERATION 3, aka V4
