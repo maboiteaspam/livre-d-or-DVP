@@ -10,17 +10,29 @@
 
 /**
  * Nos premiers besoins :
+ *  - définir le répertoire base de notre application
  *  - régler le niveaux d'erreurs de php
  *  - charger le fichier de configuration
  *  - ouvrir la connexion à la base de données
  *  - afficher la réponse correspondant à la demande du client
  *  - déclarer notre model pour le rendre accessible dans l'application
+ *  - déclarer nos controleurs pour les rendre accessible dans l'application
  */
+
+/**
+ * Notre répertoire base de l'application est désormais définis !
+ */
+$repertoire_base = realpath( dirname(__FILE__)."/.." )."/";
 
 /**
  * Notre modèle est désormais déclaré et accessible !
  */
-include("model.php");
+include($repertoire_base."model.php");
+
+/**
+ * Nos controler sont déclarés et accessible !
+ */
+include($repertoire_base."controler.php");
 
 /**
  * Le niveau d'erreur est définit adéquatement
@@ -40,7 +52,12 @@ ini_set('display_errors', 1);
  *      point n°5 : http://www.php.net/manual/fr/function.include.php
  *      http://www.php.net/manual/fr/function.return.php
  */
-$configuration = include("configuration.php");
+$configuration = include($repertoire_base."configuration.php");
+/**
+ * Nous attachons notre répertoire base à notre
+ * configuration qui sera accessible à nos controler
+ */
+$configuration["repertoire_base"] = $repertoire_base;
 
 /**
  * connexion à la base de données,
@@ -63,31 +80,55 @@ mysql_select_db($configuration["database"])
  * Générer le contenu et l'afficher
  *
  * Dans un temps deux nous pourrons déplacer certaines informations dans la configuration.
- * Dans un temps deux nous pourrons utilsier un template
  */
+
+/**
+ * Notre petit système de template pend place ici
+ * Pour ce faire nous créons un fichier template.php
+ * Qui se chargera d'inclure le fichier que nous lui indiquerons
+ *
+ * Par ailleurs nous allons ajouter à un système
+ * de controler en effectuant des appels de fonctions
+ *
+ * Nos controler pourront prendre une de ces formes ci :
+ *      [METHODE_HTTP]_[VUE_AFFICHEE]
+ *
+ * Ansi pour afficher la page d'accueil en GET, nous auront
+ *  get_livre()
+ *
+ * Pour afficher notre formulaire d'écriture en GET, puis en POST
+ *  get_ecriture()
+ *  post_ecriture()
+ *
+ * Par ailleurs, l'utilisation de controler rends obsolete l'utilisation
+ * du tableau de vue autorisées, en effet ce sont désormais les controler
+ * définis qui sont les vues autorisées
+ *
+ */
+
+// Lecture de la méthode HTTP
+$methode_http = strtolower($_SERVER["REQUEST_METHOD"]);
 
 /**
  * Lecture de la variable d'url vue
  * cf operateur ternaire
  * http://www.php.net/manual/fr/language.operators.comparison.php
  */
-$vue = isset( $_GET["vue"] ) ? $_GET["vue"] : "";
+$vue = isset( $_GET["vue"] ) ? $_GET["vue"] : "livre";
 $vue = strtolower($vue);
 
-/**
- * Définissons les vues autorisées
- */
-$vue_autorisees = array(
-    "livre",
-    "ecriture",
-);
-
-if( in_array($vue, $vue_autorisees) === false ){
-    $vue = "livre";
+$controler = "get_index"; // Valeur par défaut, qui ne devrais pas apparaitre à l'utilisateur
+if( function_exists($methode_http."_".$vue) ){    // déterminons l'existance de la fonction
+    $controler = $methode_http."_".$vue;
 }
 
-include( $vue . ".php");
+/**
+ * Nous allons maintenant appeler la fonction controler
+ * que nous avons déterminé
+ * pour cela nous utilisarons la fonction PHP call_user_func_array( $function_name, $function_parameters )
+ */
 
+call_user_func_array( $controler, array($configuration) );
 
 /**
  * N'oublions pas de clore notre connexion SQL, même si cela est inutile

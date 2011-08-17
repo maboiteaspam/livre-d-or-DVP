@@ -65,7 +65,7 @@ A quoi ça sert DRY ?
 
 
 ITTERATION 2, aka V3
-- correction du point #7, #8, #9, #13
+- correction du point #7, #8, #9, #12
 - suite de correction du point #10, #11
 
 Mélanger du code HTML et du code d'accès aux données écris PHP/SQL, pourquoi est ce mal ?
@@ -101,7 +101,11 @@ Valider les formulaires en javascript, pourquoi est ce mal ?
 ITTERATION 3, aka V4
 - correction du point #5, #6
 - suite de correction du point #10, #11
+    Mise à jour du code HTML
 
+    Introduction d'un système de template.
+
+    Ré organisation des fichiers
 
 
 
